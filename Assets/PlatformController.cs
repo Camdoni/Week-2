@@ -8,12 +8,15 @@ public class PlatformController : MonoBehaviour
     private float moveX;
 
     [SerializeField] float jumpForce;
+    [SerializeField] int maxJumps = 2;
     public bool isTouchingGround;
+    int jumpsLeft;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        jumpsLeft = maxJumps;
     }
 
     // Update is called once per frame
@@ -32,12 +35,15 @@ public class PlatformController : MonoBehaviour
         moveX = value.Get<Vector2>().x;
     }
 
-    void OnJump()
+    void OnJump(InputValue value)
     {
-        if (isTouchingGround)
+
+        if (value.isPressed && jumpsLeft > 0)
         {
             rb.AddForceY(jumpForce, ForceMode2D.Impulse);
+            jumpsLeft--;
         }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -45,7 +51,18 @@ public class PlatformController : MonoBehaviour
         if (collision.collider.CompareTag("Ground"))
         {
             isTouchingGround = true;
+            jumpsLeft = maxJumps;
         }
+
+        if (collision.collider.CompareTag("Hazard"))
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(rb);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
