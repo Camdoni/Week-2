@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,18 +12,29 @@ public class PlatformController : MonoBehaviour
     [SerializeField] int maxJumps = 2;
     public bool isTouchingGround;
     int jumpsLeft;
+    public int coinsCollected = 0;
+
+    [SerializeField] Animator animator;
+    [SerializeField] SpriteRenderer sprite;
+    bool isMovingRight;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         jumpsLeft = maxJumps;
     }
 
     // Update is called once per frame
     void Update()
     {
+        animator.SetBool("isJumping", !isTouchingGround);
+        animator.SetBool("isRunning", !Mathf.Approximately(moveX, 0f));
+        if (isMovingRight && moveX < 0)
+        {
 
+        }
     }
 
     private void FixedUpdate()
