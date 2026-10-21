@@ -16,7 +16,6 @@ public class PlatformController : MonoBehaviour
 
     [SerializeField] Animator animator;
     [SerializeField] SpriteRenderer sprite;
-    bool isMovingRight;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,7 +30,7 @@ public class PlatformController : MonoBehaviour
     void Update()
     {
         animator.SetBool("isJumping", !isTouchingGround);
-        animator.SetBool("isRunning", !Mathf.Approximately(moveX, 0f));
+        animator.SetBool("isRunning", isTouchingGround && !Mathf.Approximately(moveX, 0f));
         if (moveX != 0) sprite.flipX = moveX < 0;
     }
 
