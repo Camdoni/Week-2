@@ -23,6 +23,7 @@ public class PlatformController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
         jumpsLeft = maxJumps;
     }
 
@@ -31,10 +32,7 @@ public class PlatformController : MonoBehaviour
     {
         animator.SetBool("isJumping", !isTouchingGround);
         animator.SetBool("isRunning", !Mathf.Approximately(moveX, 0f));
-        if (isMovingRight && moveX < 0)
-        {
-
-        }
+        if (moveX != 0) sprite.flipX = moveX < 0;
     }
 
     private void FixedUpdate()
